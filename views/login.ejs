@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+        body{
+            height: 100vh;
+        }.center{
+            margin: auto;
+        }a{
+            margin-top: 1.5%;
+        }.form-items{
+            margin: 1.5% 0.5% 1.5% 0.5%;
+        }label{
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <form action="/" method="post">
-            <input type="text" placeholder="username" name="username" required>
-            <input type="password" placeholder="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <a href="./signup">Sign up</a>
-        <%= upp %>
-        <a href="./changePassword">Change Password</a>
+    <div class="card center" style="width: 30%; height: auto;">
+        <div class="card-body">
+            <form action="/" method="post" class="form-control form-control-sm">
+                <label class="card-title form-items" for="username">Login</label>
+                <input type="text" placeholder="username" name="username" required class="form-control form-control-sm form-items">
+                <input type="password" placeholder="password" name="password" required class="form-control form-control-sm form-items">
+                <button type="submit" class="form-control btn btn-danger form-items">Login</button>
+            </form>
+            <div class="d-flex flex-row justify-content-between">
+                <a href="./signup" class="btn btn-danger card-link p-2">Sign up</a>
+                <%= upp %>
+                <a href="./changePassword"class="btn btn-danger card-link p-2">Change Password</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

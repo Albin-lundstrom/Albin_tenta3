@@ -3,36 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Center</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
         input{
-            margin: 3% 0 3% 0;
+            margin: 1.5% 0 1.5% 0;
+        }
+        form{
+            padding: 0 !important;
+        }
+        .form-div{
+            padding: 0 !important;
+        }
+        .admin-p{
+            font-weight: bold;
+        }
+        h4{
+            text-align: center;
+            text-decoration: underline;
+        }.header-div{
+            padding-bottom: 0 !important;
+        }.card-body{
+            padding-top: 0 !important;
         }
     </style>
 </head>
 <body>
-    <a href="/" class="btn btn-danger">Home</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand btn-danger btn" href="/">Home</a>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav d-flex" style="width: 100%;">
+            <% if(data[0].admin === true){ %>
+                <a href="./admin" class="p-2 nav-link">Admin center</a>
+            <% }; %>
+            <a class="nav-link ms-auto p-2" aria-current="page" href="./logout">Logout</a>
+          </div>
+        </div>
+    </nav>
     <div class="d-flex flex-row bd-highlight mb-3">
-        <div class="card d-flex flex-column bd-highlight mb-3 p-2" style="width: 50vw; height: 100vh;">
-            <h4>Create new post</h4>
-            <form action="/blog" method="post" enctype="multipart/form-data" class="d-flex flex-column card-body p-2">
+        <div class="card d-flex flex-column bd-highlight mb-3 p-2 form-div" style="width: 50vw; height: 90vh;">
+            <div class="p-2 header-div">
+                <h4>Create new post</h4>
+            </div>
+            <form action="/blog" method="post" enctype="multipart/form-data" class="d-flex flex-column card-body p-2 align-items-center" style="width: 50vw; height: 90vh;">
                 <input type="text" class="p-2 form-control"  placeholder="Title" name="title" required>
                 <label for="file"  class="p-2 form-control"> Image for the post</label>
                 <input type="file" class="p-2 form-control" name="img" required>
-                <textarea name="content" id="" cols="30" rows="15" class="p-2 form-control">Write the content here</textarea>
+                <textarea name="content" id="" cols="30" rows="10" maxlength="225" class="p-2 form-control">Write the content here</textarea>
+                <textarea name="clickbait" id="" cols="30" rows="2" maxlength="70" class="p-2 form-control">Write the tldr here</textarea>
                 <input class="p-2 form-control" type="text" placeholder="Author" name="author" required>
                 <button class="btn btn-danger p-2 form-control" type="submit" style="justify-self: flex-end;">Post blog</button>
             </form>
         </div>
-        <div class="card d-flex flex-column bd-highlight mb-3 p-2" style="width: 50vw; height: 100vh;">
-            <h4> Edit user</h4>
-            <form action="/admin" method="post" class="d-flex flex-column card-body p-2">
+        <div class="card d-flex flex-column bd-highlight mb-3 p-2 form-div" style="width: 50vw; height: 90vh;">
+            <div class="p-2 header-div">
+                <h4> Edit user</h4>
+            </div>
+            <form action="/admin" method="post" class="d-flex flex-column card-body p-2" style="width: 50vw; height: 90vh;">
                 <input class="p-2 form-control" type="text" placeholder="username" name="usern" required>
                 <input class="p-2 form-control" type="password" placeholder="password" name="pass">
-                <div class=" d-flex p-2 flex-row bd-highlight mb-3 p-2 align-items-center">
-                    <p class="p-2">Admin</p>
+                <div class=" d-flex p-2 flex-row bd-highlight mb-3 p-2 align-items-center form-control">
+                    <p class="p-2 admin-p">Admin</p>
                     <span class="d-flex flex-row bd-highlight mb-3 align-items-center p-2">
                         <input class="p-2" type="radio" value="1" name="adm" id="adminY">
                         <label class="p-2" for="adminY">Yes</label>

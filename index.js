@@ -33,6 +33,7 @@ app.use(express.static(__dirname));
 const multer = require('multer');
 const upload = multer({ dest: 'img/' });
 
+
 const isAuthenticated = (req, res, next) => {
     if (req.session.admin === true) next()
     else next('route')
@@ -42,19 +43,34 @@ const islogedin = (req, res, next) => {
     else next('route')
 }
 
-app.get('/', isAuthenticated, (req, res) => {
-    res.render('index.ejs', {
+app.get('/', isAuthenticated, async (req, res) => {
+    getPosts().then((res) => users(res));
+        const users = async (admin) => {
+        let data = await getspesUsers(req.session.username);
+        for(var i = 0; i < admin.length; i++){
+            date = new Date(admin[i].createdAt)
+            let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            admin[i].createdAt = Newdate;
+        }
+        res.render('index.ejs', {
+            data: data,
+            user: admin
     });
-})
+}})
 app.get('/', islogedin, (req, res) => {
-    res.render('index.ejs', {
+    getPosts().then((res) => users(res));
+        const users = async (admin) => {
+        let data = await getspesUsers(req.session.username);
+        for(var i = 0; i < admin.length; i++){
+            date = new Date(admin[i].createdAt)
+            let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            admin[i].createdAt = Newdate;
+        }
+        res.render('index.ejs', {
+            data: data,
+            user: admin
     });
-})
-app.get('/', (req, res) => {
-    res.render('login.ejs', {
-        upp: ""
-    });
-})
+}})
 app.get('/login', (req, res) => {
     res.render('login.ejs', {
         upp: ""
@@ -74,21 +90,41 @@ app.post('/', async (req, res) => {
         let dbPass = getPass[0].password;
         let dbAdmin = getPass[0].admin;
         if(password === dbPass && dbAdmin === true){
+            req.session.username = getPass[0].username
             req.session.admin = getPass[0].admin
-            req.session.save(function (err) {
+            req.session.save(async function (err) {
                 if (err) return next(err)
-            res.render('admin.ejs', {
+                getPosts().then((res) => users(res));
+                const users = async (admin) => {
+                let data = await getspesUsers(req.session.username);
+                for(var i = 0; i < admin.length; i++){
+                    date = new Date(admin[i].createdAt)
+                    let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+                    admin[i].createdAt = Newdate;
+                }
+                res.render('index.ejs', {
+                    data: data,
+                    user: admin,
             });
-            })
+            }})
         }else if(password === dbPass && dbAdmin === false){
             req.session.username = req.body.username;
             req.session.save(function (err) {
                 if (err) return next(err)
-            res.render('index.ejs', {
-            });
-            })
-        }
-        }
+                getPosts().then((res) => users(res));
+                const users = async (admin) => {
+                let data = await getspesUsers(req.session.username);
+                for(var i = 0; i < admin.length; i++){
+                    date = new Date(admin[i].createdAt)
+                    let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+                    admin[i].createdAt = Newdate;
+                }
+                res.render('index.ejs', {
+                    data: data,
+                    user: admin
+                });
+            }})
+        }}
     } catch (error) {
         console.log(error);
     }
@@ -160,9 +196,11 @@ app.post('/changePassword', async (req, res) => {
         });    
     }
 });
-app.get('/admin', (req, res) => {  
-    res.render('signup.ejs', {
-    });    
+app.get('/admin', isAuthenticated, async(req, res) => {  
+    let data = await getspesUsers(req.session.username);
+        res.render('admin.ejs', {
+            data: data
+        });
 })
 app.post('/admin', async (req, res) => {  
 let { usern, pass, adm } = req.body;
@@ -172,7 +210,9 @@ if(oldPass[0] != null && pass != '' && adm !== undefined){
     try {
         changes = {password:pass, admin:adm}
         await prismaEditUser(usern, changes);
+        let data = await getspesUsers(req.session.username);
         res.render('admin.ejs', {
+            data: data
         });    
     } catch (error) {
         res.status(500).send('Internal Server Error');
@@ -182,7 +222,9 @@ if(oldPass[0] != null && pass != '' && adm !== undefined){
     try {
         changes = {admin:adm}
         await prismaEditUser(usern, changes);
+        let data = await getspesUsers(req.session.username);
         res.render('admin.ejs', {
+            data: data
         });    
     } catch (error) {
         res.status(500).send('Internal Server Error');
@@ -191,34 +233,115 @@ if(oldPass[0] != null && pass != '' && adm !== undefined){
     try {
         changes = {password:pass}
         await prismaEditUser(usern, changes);
+        let data = await getspesUsers(req.session.username);
         res.render('admin.ejs', {
+            data: data
         });    
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
 }else{
+    let data = await getspesUsers(req.session.username);
     res.render('admin.ejs', {
+        data: data
     });    
 }
 })
-
 app.post('/blog', upload.single('img'), async (req, res) => {
-    const { title, content, author } = req.body;
+    const { title, content, author, clickbait } = req.body;
     const img = req.file ? req.file.filename : null;
-    let id = await getspesUsers(author);
-    authorid = id[0].id;
     try {
-        await prismaCreatePost(title, content, authorid, img);
+        await prismaCreatePost(title, content, author, img, clickbait);
+        let data = await getspesUsers(req.session.username);
         res.render('admin.ejs', {
+            data: data
         });
     } catch (error) {
         console.log(error)
     }
 });
-process.on('beforeExit', async () => {
-    await prisma.$disconnect();
+app.get('/blog', isAuthenticated, async(req, res) => {  
+    let data = await getspesUsers(req.session.username);
+    res.render('admin.ejs', {
+        data: data
+    });    
+})
+
+app.get('/blogpost:id', isAuthenticated, async (req, res) => { 
+    getPosts().then((res) => users(res));
+    const clientUrl = req.hostname + req.originalUrl;
+        cilentPath = clientUrl
+        let index = Number(cilentPath.slice(14));
+        const users = async (admin) => {
+        let data = await getspesUsers(req.session.username);
+        for(var i = 0; i < admin.length; i++){
+            date = new Date(admin[i].createdAt)
+            let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            admin[i].createdAt = Newdate;
+        }
+        res.render('blogpost.ejs', {
+            data: data,
+            user: admin,
+            i: index
+        });    
+}})
+app.get('/edit:id', isAuthenticated, async (req, res) => { 
+    getPosts().then((res) => users(res));
+    const clientUrl = req.hostname + req.originalUrl;
+        cilentPath = clientUrl
+        let index = Number(cilentPath.slice(14));
+        const users = async (admin) => {
+        let data = await getspesUsers(req.session.username);
+        for(var i = 0; i < admin.length; i++){
+            date = new Date(admin[i].createdAt)
+            let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            admin[i].createdAt = Newdate;
+        }
+        res.render('edit.ejs', {
+            data: data,
+            user: admin,
+            i: index
+        });    
+}})
+
+app.post('/edit', upload.single('img'), async (req, res) => {
+    const { title, content, author } = req.body;
+    const img = req.file ? req.file.filename : null;
+    try {
+        getPosts().then((res) => users(res));
+        const users = async (admin) => {
+        let data = await getspesUsers(req.session.username);
+        for(var i = 0; i < admin.length; i++){
+            date = new Date(admin[i].createdAt)
+            let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+            admin[i].createdAt = Newdate;
+        }
+        res.render('edit.ejs', {
+            data: data,
+            user: admin
+        });
+    }} catch (error) {
+        console.log(error)
+    }
 });
 
+app.get('/', (req, res) => {
+    res.render('login.ejs', {
+        upp: ""
+    });
+})
+
+app.get('/edit:id', (req, res) => {
+    res.render('login.ejs', {
+        upp: ""
+    });
+})
+
+app.get('/admin', (req, res) => {
+    res.render('login.ejs', {
+        upp: ""
+    });
+})
 var server = app.listen(8000, () => {  
     var host = server.address().address  
     var port = server.address().port  

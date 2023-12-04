@@ -3,22 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sign up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+        body{
+            height: 100vh;
+        }.center{
+            margin: auto;
+        }a{
+            margin-top: 1.5%;
+        }.form-items{
+            margin: 1.5% 0.5% 1.5% 0.5%;
+        }label{
+            font-weight: bold;
+        }
+    </style> 
 </head>
 <body>
-    <div>
-
-    </div>
-    <div class="card" style="width: 18rem;">
+    <div class="card center" style="width: 18rem; height: auto;">
         <div class="card-body">
-            <form action="/signup" method="post">
-                <input class="card-text" type="text" placeholder="username" name="username" required>
-                <input class="card-text" type="password" placeholder="password" name="password" required>
-                <button class="btn btn-primary" type="submit">Sign up.</button>
+            <form action="/signup" method="post" class="form-control form-control-sm">
+                <label class="card-title form-items" for="username">Login</label>
+                <input type="text" placeholder="username" name="username" required class="form-control form-control-sm form-items">
+                <input type="password" placeholder="password" name="password" required class="form-control form-control-sm form-items">
+                <button class="form-control btn btn-primary form-items" type="submit">Sign up.</button>
             </form>
-            <%= us %>
+            <div class="d-flex flex-row justify-content-flex-start">
+                <a href="./login" class="btn btn-primary card-link p-2">Login</a>
+                <%= us %>
+            </div>
         </div>
-        <a href="./login">Login</a>
     </div>
 </body>
 </html>
