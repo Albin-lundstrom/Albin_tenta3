@@ -6,7 +6,7 @@ console.log(ids);
 console.log(changes);
 try {
   const updateUser = await prisma.user.update({
-    where: { id: ids },
+    where: { username: ids },
     data: changes
 })
   console.log('User Edited:', updateUser);

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+
+    </div>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <form action="/signup" method="post">
+                <input class="card-text" type="text" placeholder="username" name="username" required>
+                <input class="card-text" type="password" placeholder="password" name="password" required>
+                <button class="btn btn-primary" type="submit">Sign up.</button>
+            </form>
+            <%= us %>
+        </div>
+        <a href="./login">Login</a>
+    </div>
+</body>
+</html>
