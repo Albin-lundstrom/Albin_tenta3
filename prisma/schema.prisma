@@ -22,7 +22,7 @@ model BlogPost {
     createdAt DateTime @default(now())
     title     String?
     img       String?
-    clickbait String @db.VarChar(70)
-    content   String @db.VarChar(255)
+    clickbait String @db.VarChar(100)
+    content   String @db.VarChar(1400)
     authorId  String?
 }

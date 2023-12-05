@@ -46,13 +46,13 @@
         <div class="p-2 header-div">
             <h4>Edit Post</h4>
         </div>
-        <form action="/edit<%=i%>" method="post" enctype="multipart/form-data" class="d-flex flex-column card-body p-2 align-items-center align-self-center" style="width: 80%; height: 80%;">
-            <input type="text" value="<%= user[i].title %>" class="p-2 form-control" name="title" required>
+        <form action="/edit<%= i %>" method="post" enctype="multipart/form-data" class="d-flex flex-column card-body p-2 align-items-center align-self-center" style="width: 80%; height: 80%;">
+            <input type="text" value="<%= user[i].title %>" class="p-2 form-control" name="title">
             <label for="file"  class="p-2 form-control"> Image for the post</label>
-            <input type="file" class="p-2 form-control" name="img" required>
-            <textarea name="content" id="" cols="30" rows="10" maxlength="225" class="p-2 form-control"><%= user[i].content %></textarea>
-            <textarea name="clickbait" id="" cols="30" rows="2" maxlength="70" class="p-2 form-control"><%= user[i].clickbait %></textarea>
-            <input class="p-2 form-control" type="text" value="<%= user[i].authorId %>" name="author" required>
+            <input type="file" class="p-2 form-control" name="img">
+            <textarea name="content" id="" cols="30" rows="10" maxlength="700" class="p-2 form-control"><%= user[i].content %></textarea>
+            <textarea name="clickbait" id="" cols="30" rows="2" maxlength="100" class="p-2 form-control"><%= user[i].clickbait %></textarea>
+            <input class="p-2 form-control" type="text" value="<%= user[i].authorId %>" name="author">
             <button class="btn btn-danger p-2 form-control" type="submit" style="justify-self: flex-end;">Post blog</button>
         </form>
     </div>

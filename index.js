@@ -267,11 +267,11 @@ app.get('/blog', isAuthenticated, async(req, res) => {
     });    
 })
 
-app.get('/blogpost:id', isAuthenticated, async (req, res) => { 
+app.get('/blogpost:id', async (req, res) => { 
     getPosts().then((res) => users(res));
     const clientUrl = req.hostname + req.originalUrl;
         cilentPath = clientUrl
-        let index = Number(cilentPath.slice(14));
+        let index = Number(cilentPath.slice(18));
         const users = async (admin) => {
         let data = await getspesUsers(req.session.username);
         for(var i = 0; i < admin.length; i++){
@@ -304,19 +304,28 @@ app.get('/edit:id', isAuthenticated, async (req, res) => {
         });    
 }})
 
-app.post('/edit', upload.single('img'), async (req, res) => {
-    const { title, content, author } = req.body;
+app.post('/edit:id', upload.single('img'), async (req, res) => {
+    const { title, content, author, clickbait } = req.body;
     const img = req.file ? req.file.filename : null;
     try {
+        const clientUrl = req.hostname + req.originalUrl;
+        cilentPath = clientUrl
+        let index = Number(cilentPath.slice(14));
         getPosts().then((res) => users(res));
         const users = async (admin) => {
         let data = await getspesUsers(req.session.username);
-        for(var i = 0; i < admin.length; i++){
-            date = new Date(admin[i].createdAt)
+            date = new Date(admin[index].createdAt)
             let Newdate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-            admin[i].createdAt = Newdate;
+            admin[index].createdAt = Newdate
+            if(img === null){
+            let changes = { title:title, content:content, authorId:author, clickbait:clickbait }
+            await prismaEditPost(admin[index].id, changes);
+        }else{
+            let changes = { title:title, content:content, authorId:author, clickbait:clickbait, img:img}
+            await prismaEditPost(admin[index].id, changes);
         }
         res.render('edit.ejs', {
+            i: index,
             data: data,
             user: admin
         });

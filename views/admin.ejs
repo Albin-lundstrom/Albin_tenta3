@@ -48,11 +48,11 @@
                 <h4>Create new post</h4>
             </div>
             <form action="/blog" method="post" enctype="multipart/form-data" class="d-flex flex-column card-body p-2 align-items-center" style="width: 50vw; height: 90vh;">
-                <input type="text" class="p-2 form-control"  placeholder="Title" name="title" required>
+                <input type="text" class="p-2 form-control"  placeholder="Title" name="title" required maxlength="25">
                 <label for="file"  class="p-2 form-control"> Image for the post</label>
                 <input type="file" class="p-2 form-control" name="img" required>
-                <textarea name="content" id="" cols="30" rows="10" maxlength="225" class="p-2 form-control">Write the content here</textarea>
-                <textarea name="clickbait" id="" cols="30" rows="2" maxlength="70" class="p-2 form-control">Write the tldr here</textarea>
+                <textarea name="content" id="" cols="30" rows="10" maxlength="700" class="p-2 form-control">Write the content here</textarea>
+                <textarea name="clickbait" id="" cols="30" rows="2" maxlength="100" class="p-2 form-control">Write the tldr here</textarea>
                 <input class="p-2 form-control" type="text" placeholder="Author" name="author" required>
                 <button class="btn btn-danger p-2 form-control" type="submit" style="justify-self: flex-end;">Post blog</button>
             </form>
