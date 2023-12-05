@@ -32,13 +32,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand btn-danger btn" href="/">Home</a>
+          <a class="navbar-brand btn-danger btn text-light" href="/">Home</a>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav d-flex" style="width: 100%;">
             <% if(data[0].admin === true){ %>
                 <a href="./admin" class="p-2 nav-link">Admin center</a>
                 <% }; %>
-            <a class="nav-link ms-auto p-2" aria-current="page" href="./logout">Logout</a>
+            <a class="nav-link ms-auto p-2 btn btn-danger text-light" href="./blogpost<%= i %>">Back to blog</a>
+            <a class="nav-link p-2" aria-current="page" href="./logout">Logout</a>
           </div>
         </div>
     </nav>
